@@ -35,7 +35,7 @@ These instructions will get you a copy of the project up and running on your loc
 git clone https://github.com/zishansami102/CNN-from-Scratch
 ```
 
-* Downlad the training dataset and copy that to this folder and extract it into a new /data directory with all 75 zip files as it is
+* Downlad the training dataset and extract it into a new /data directory with all 75 zip files as it is
 
 * [Download](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 model and move it to the root directory
 
@@ -57,6 +57,7 @@ python savetfreco.py
 
 ```
 python train.py
+```
 
 
 ## Acknowledgments
