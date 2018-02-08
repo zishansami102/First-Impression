@@ -46,18 +46,44 @@ def _bytes_feature(value):
 	return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
 
-train_filename = 'train500.tfrecords'  # address to save the TFRecords file
+# train_filename = 'train500.tfrecords'  # address to save the TFRecords file
+# # open the TFRecords file
+# writer = tf.python_io.TFRecordWriter(train_filename)
+# for i in range(len(train_addrs)):
+#     # print how many images are saved every 1000 images
+#     if not i % 1000:
+#         print 'Train data: {}/{}'.format(i, len(train_addrs))
+#         sys.stdout.flush()
+#     # Load the image
+#     img = load_image(train_addrs[i])
+#     # print img.shape
+#     label = train_labels[i].astype(np.float32)
+#     # print label.shape
+#     # print label
+#     # Create a feature
+#     feature = {'train/label': _bytes_feature(tf.compat.as_bytes(label.tostring())),
+#                'train/image': _bytes_feature(tf.compat.as_bytes(img.tostring()))}
+#     # Create an example protocol buffer
+#     example = tf.train.Example(features=tf.train.Features(feature=feature))
+    
+#     # Serialize to string and write on the file
+#     writer.write(example.SerializeToString())
+
+
+
+test_filename = 'test500.tfrecords'  # address to save the TFRecords file
 # open the TFRecords file
-writer = tf.python_io.TFRecordWriter(train_filename)
-for i in range(len(train_addrs)):
+writer = tf.python_io.TFRecordWriter(test_filename)
+
+for i in range(len(val_addrs)):
     # print how many images are saved every 1000 images
     if not i % 1000:
-        print 'Train data: {}/{}'.format(i, len(train_addrs))
+        print 'Val data: {}/{}'.format(i, len(val_addrs))
         sys.stdout.flush()
     # Load the image
-    img = load_image(train_addrs[i])
+    img = load_image(val_addrs[i])
     # print img.shape
-    label = train_labels[i].astype(np.float32)
+    label = val_labels[i].astype(np.float32)
     # print label.shape
     # print label
     # Create a feature
@@ -68,6 +94,6 @@ for i in range(len(train_addrs)):
     
     # Serialize to string and write on the file
     writer.write(example.SerializeToString())
-    
+
 writer.close()
 sys.stdout.flush()
