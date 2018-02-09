@@ -29,31 +29,31 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Installing
 
-* Clone the repository
+Clone the repository
 
 ```
-git clone https://github.com/zishansami102/CNN-from-Scratch
+git clone https://github.com/zishansami102/First-Impression
 ```
 
-* Downlad the training dataset and extract it into a new /data directory with all 75 zip files as it is
+Downlad the training dataset and extract it into a new /data directory with all 75 zip files as it is
 
-* [Download](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 model and move it to the root directory
+[Download](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 model and move it to the root directory
 
 
-* Run the vidToimg.py file to scrape the images from the videos and save it to a new ImageData directory
+Run the vidToimg.py file to scrape the images from the videos and save it to a new ImageData directory
 
 ```
 python VidToimg.py
 ```
 
 
-* If succesfully completed then run the savetfreco.py file to form a data pipeline by saving the all the images into train500.tfrecords file to load it later during training
+If succesfully completed then run the savetfreco.py file to form a data pipeline by saving the all the images into train500.tfrecords file to load it later during training
 
 ```
 python savetfreco.py
 ```
 
-* Start the training by running the following command
+Start the training by running the following command
 
 ```
 python train.py
