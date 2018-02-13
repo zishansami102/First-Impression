@@ -1,5 +1,5 @@
 ########################################################################################
-# Davi Frossard, 2016                                                                  #
+#                                                                                      #
 # VGG16 implementation in TensorFlow                                                   #
 # Details:                                                                             #
 # http://www.cs.toronto.edu/~frossard/post/vgg16/                                      #
@@ -19,22 +19,25 @@ warnings.filterwarnings("ignore")
 
 
 class DAN:
-    def __init__(self, imgs, weights=None, sess=None):
+    def __init__(self, imgs, REG_PENALTY=0, preprocess=None):
         self.imgs = imgs
+        self.mean=[0,0,0]
+        if pretrained=='vggface':
+            self.mean = [129.1862793, 104.76238251, 93.59396362]
+        if pretrained=='imagenet':
+            self.mean = [123.68, 116.779, 103.939]
         self.convlayers()
         self.dan_part()
-        if weights is not None and sess is not None:
-            self.load_weights(weights, sess)
         self.output = tf.nn.sigmoid(self.reg_head)
+        self.cost_reg = REG_PENALTY*tf.reduce_mean(tf.square(self.parameters[-2]))/2
         
-
 
     def convlayers(self):
         self.parameters = []
 
         # zero-mean input
         with tf.name_scope('preprocess') as scope:
-            mean = tf.constant([123.68, 116.779, 103.939], dtype=tf.float32, shape=[1, 1, 1, 3], name='img_mean')
+            mean = tf.constant(self.mean, dtype=tf.float32, shape=[1, 1, 1, 3], name='img_mean')
             images = self.imgs-mean
 
         # conv1_1
@@ -242,10 +245,24 @@ class DAN:
             self.parameters += [fc1w, fc1b]
 
 
-    def load_weights(self, weight_file, sess):
+    def initialize_with_imagenet(self, weight_file, sess):
         weights = np.load(weight_file)
         keys = sorted(weights.keys())
         for i, k in enumerate(keys):
             if i==len(self.parameters)-2:
                 break
             sess.run(self.parameters[i].assign(weights[k]))
+
+    def initialize_with_vggface(self, weight_file, sess):
+        data = loadmat(weight_file)
+        layers = data['layers'][0]
+        i=0
+        for layer in layers:
+            name = layer[0]['name'][0][0]
+            layer_type = layer[0]['type'][0][0]
+            if layer_type=='conv' and name[0:2]!='fc':
+                kernel, bias = layer[0]['weights'][0][0]
+                sess.run(self.parameters[i].assign(kernel))
+                sess.run(self.parameters[i+1].assign(bias))
+                print name, kernel.shape, bias.shape
+                i+=2

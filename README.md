@@ -1,17 +1,24 @@
 # First-Impression
 
-This is the solution to the poblem "First Impressions V2" given in CVPR'17, ECCV '16 & ICPR '16 and this piece of code is the implementation of the [paper](https://cs.nju.edu.cn/wujx/paper/eccvw16_APA.pdf) which is the winner of ECCV 2016
+This is the solution to the poblem "First Impressions" given in CVPR'17, ECCV '16 & ICPR '16 and this piece of code is the partial implementation of the paper [Deep Bimodal Regression for Apparent Personality Analysis](https://cs.nju.edu.cn/wujx/paper/eccvw16_APA.pdf) which is the winner of ECCV 2016
 
 This problem is a challenge on “first impressions”, in which participants will develop solutions for recognizing personality traits of users in short video sequences. They have made available a large newly collected data set sponsored by Microsoft of at least 10,000 15-second videos collected from YouTube, annotated with personality traits by AMT workers. 
 
-The traits to be recognized will correspond to the “big five” personality traits used in psychology and well known of hiring managers using standardized personality profiling: 
+The traits to be recognized will correspond to the “big five” personality traits used in psychology and well known of hiring managers using standardized personality profiling:
 * Extroversion
 * Agreeableness
 * Conscientiousness
 * Neuroticism
 * Openness to experience.
 
-As is known, the first impression made is highly important in many contexts, such as human resourcing or job interviews. This work could become very relevant to training young people to present themselves better by changing their behavior in simple ways. The participants who obtain the best results in the challenge will be invited to submit a paper to the workshop.
+As is known, the first impression made is highly important in many contexts, such as human resourcing or job interviews. This work could become very relevant to training young people to present themselves better by changing their behavior in simple ways.
+
+The model used is called `Descriptor Aggregation Network` called DAN in short.
+
+![Model Archi](modelImg.png)
+
+What distinguishes DAN from the traditional CNN is: the fully connected layers are discarded, and replaced by both average- and max-pooling following the last convolutional layers (Pool5). Meanwhile, each pooling operation is followed by the standard L2-normalization. After that, the obtained two 512-d feature vectors are concatenated as the final image representation. Thus, in DAN, the deep descriptors of the last convolutional layers are aggregated as a single visual feature. Finally, a regression (fc+sigmoid) layer is added for end-to-end training.
+
 
 
 ## Getting Started 
@@ -35,7 +42,7 @@ Clone the repository
 git clone https://github.com/zishansami102/First-Impression
 ```
 
-Downlad the training dataset and extract it into a new /data directory with all 75 zip files as it is
+Downlad the training dataset and extract it into a new /data directory with all 75 training zip files and 24 validation zip files as it is
 
 [Download](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 model and move it to the root directory
 
