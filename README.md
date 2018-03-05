@@ -30,9 +30,9 @@ These instructions will get you a copy of the project up and running on your loc
 * [Python2](https://www.python.org/download/releases/2.7.2/) - Python version 2.7.2
 * [Numpy](http://www.numpy.org/) - Multidimensioanl Mathematical Computing
 * [Tensorflow](https://www.tensorflow.org/) - Deep Learning python module
-* [Pandas](https://pandas.pydata.org/) -
+* [Pandas](https://pandas.pydata.org/) - Loading csv files
 * [Cha-Learn Dataset](http://chalearnlap.cvc.uab.es/dataset/24/description/) - Dataset for this problem
-* [Pretrained VGG16 Model](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 mode
+* [Pretrained VGG-Face Model](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model
 
 ### Installing
 
@@ -42,9 +42,9 @@ Clone the repository
 git clone https://github.com/zishansami102/First-Impression
 ```
 
-Downlad the training dataset and extract it into a new /data directory with all 75 training zip files and 24 validation zip files as it is
+Downlad the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
 
-[Download](https://www.cs.toronto.edu/~frossard/vgg16/vgg16_weights.npz) Pretrained Vgg16 model and move it to the root directory
+[Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
 
 
 Run the vidToimg.py file to scrape the images from the videos and save it to a new ImageData directory

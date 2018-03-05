@@ -9,17 +9,16 @@ import pickle
 warnings.filterwarnings("ignore")
 
 
-LEARNING_RATE = 0.0005
-BATCH_SIZE = 25
-N_EPOCHS = 2
+BATCH_SIZE = 50
+
 REG_PENALTY = 0
-PER=0.2
+
 # NUM_VID = 500
 NUM_IMAGES = 599900	
 NUM_TEST_IMAGES = 199900
 # NUM_IMAGES = 10000	
 # NUM_TEST_IMAGES = 4000
-
+N_EPOCHS = 1
 
 
 imgs = tf.placeholder('float', [None, 224, 224, 3], name="image_placeholder")
@@ -31,14 +30,10 @@ config.gpu_options.per_process_gpu_memory_fraction = 0.8
 with tf.Session(config=config) as sess:
 	
 	model = DAN(imgs, REG_PENALTY=REG_PENALTY, preprocess='vggface')
-	output = model.output
-	cost = tf.reduce_mean(tf.squared_difference(model.output, values))+ model.cost_reg
-	optimizer = tf.train.AdamOptimizer(learning_rate=LEARNING_RATE).minimize(cost)
-	
-
+	# output = model.output
 	
 	tr_reader = tf.TFRecordReader()
-	tr_filename_queue = tf.train.string_input_producer(['train_full.tfrecords'], num_epochs=2*N_EPOCHS)
+	tr_filename_queue = tf.train.string_input_producer(['train_full.tfrecords'], num_epochs=N_EPOCHS)
 	_, tr_serialized_example = tr_reader.read(tr_filename_queue)
 	# Decode the record read by the reader
 	tr_feature = {'train/image': tf.FixedLenFeature([], tf.string), 'train/label': tf.FixedLenFeature([], tf.string)}
@@ -75,101 +70,79 @@ with tf.Session(config=config) as sess:
 	coord = tf.train.Coordinator()
 	threads = tf.train.start_queue_runners(coord=coord)
 	
-	model.initialize_with_vggface('vgg-face.mat', sess)
-	loss_list=[]
-	param_num = 1 
-	for epoch in range(N_EPOCHS):
+	
+	file_list = ["param"+str((60/N_EPOCHS)*(x+1))+".pkl" for x in range(0,N_EPOCHS)]
+	file_list=["param25.pkl"]
+	training_accuracy = []
+	validation_accuracy = []
+	epoch=0
+	stime = time.time()
+	print "Testing Started"
+	for pickle_file in file_list:
+		error=0
+		model.load_trained_model(pickle_file, sess)
 		tr_acc_list = []
 		val_acc_list=[]
-		sess.run(tf.local_variables_initializer())
+	
 		i=0
-		error=0
-		stime = time.time()
-
-		while i<NUM_IMAGES:
-			i+=BATCH_SIZE
-			try:
-				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
-			except:
-				print error, ": Error in reading this batch"
-				error+=1
-				if error>10:
-					break
-				continue
-			_, c = sess.run([optimizer, cost], feed_dict = {imgs: epoch_x.astype(np.float32), values: epoch_y})
-			loss_list.append(np.power(c,0.5))
-			
-			x=100/PER
-			if not i%2000:
-				per = float(i)/NUM_IMAGES*100
-				print("Epoch:"+str(round(per,2))+"% Of "+str(epoch+1)+"/"+str(N_EPOCHS)+", Batch loss:"+str(round(c,4)))
-				ftime = time.time()
-				remtime = (ftime-stime)*((NUM_IMAGES-i)/(NUM_IMAGES/x))
-				stime=ftime
-				printTime(remtime)
-			if not i%20000:
-				with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
-					pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-				print str(param_num)+" weights Saved!!"
-				param_num+=1
-
-		with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
-			pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-			print str(param_num)+" weights Saved!!"
-			param_num+=1
-
-
-		sess.run(tf.local_variables_initializer())
-		print("Computing Training Accuracy..")
-		i=0
-		error=0
 		while i<NUM_IMAGES:
 			i+=BATCH_SIZE
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
 				print "Error in reading this batch"
-				error+=1
-				if error>10:
+				if error>=5:
 					break
+				error+=1
 				continue
 			output = sess.run([model.output], feed_dict = {imgs: epoch_x.astype(np.float32)})
 			tr_mean_acc = np.mean(1-np.absolute(output-epoch_y))
 			tr_acc_list.append(tr_mean_acc)
-			
-		tr_mean_acc = np.mean(tr_acc_list)
+			if not i%20000:
+				print i, "images completed in training"
 
-		print("Computing Validation Accuracy..")
+		tr_mean_acc = np.mean(tr_acc_list)
+		training_accuracy.append(tr_mean_acc)
+
 		i=0
-		error=0
 		while i<NUM_TEST_IMAGES:
 			i+=BATCH_SIZE
 			try:
 				epoch_x, epoch_y = sess.run([val_images, val_labels])
 			except:
 				print "Error in reading this batch"
-				error+=1
-				if error>10:
+				if error>=5:
 					break
+				error+=1
 				continue
 			output = sess.run([model.output], feed_dict = {imgs: epoch_x.astype(np.float32)})
 			val_mean_acc = np.mean(1-np.absolute(output-epoch_y))
 			val_acc_list.append(val_mean_acc)
-			
+			if not i%20000:
+				print i, "images completed in validation"
+		sess.run(tf.local_variables_initializer())
+
 		val_mean_acc = np.mean(val_acc_list)
+		validation_accuracy.append(val_mean_acc)
+
 		print("Epoch"+ str(epoch+1)+" completed out of "+str(N_EPOCHS))
-		print("Tr. Mean Acc:"+str(round(tr_mean_acc,4)))
-		print("Val. Mean Acc:"+str(round(val_mean_acc,4)))
+		print("Tr. Mean Acc:"+str(round(tr_mean_acc,4))+", Val. Mean Acc:"+str(round(val_mean_acc,4)))
 		
-		
+		ftime = time.time()
+		remtime = (ftime-stime)*(N_EPOCHS-epoch-1)
+		stime=ftime
+		printTime(remtime)
+		epoch+=1
+		if not epoch%(N_EPOCHS/2):
+			with open("acc_plot25.pkl", "wb") as nfile:
+				pickle.dump([training_accuracy, validation_accuracy], nfile)
+			print "Hafl testing saved"
+
+	
 
 	coord.request_stop()
 	# Wait for threads to stop
 	coord.join(threads)
 
-	saver = tf.train.Saver()
-	saver.save(sess, 'model_full')
-	print "Session Saved!!"
-	with open('loss_full.pkl', 'wb') as pfile:
-		pickle.dump(loss_list, pfile, pickle.HIGHEST_PROTOCOL)
-	print "Loss List Saved!!"
+	print "Testing done... Values saved successfully"
+

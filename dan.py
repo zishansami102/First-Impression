@@ -11,6 +11,8 @@
 import tensorflow as tf
 import numpy as np
 import warnings
+from scipy.io import loadmat
+import pickle
 
 
 warnings.filterwarnings("ignore")
@@ -21,14 +23,13 @@ warnings.filterwarnings("ignore")
 class DAN:
     def __init__(self, imgs, REG_PENALTY=0, preprocess=None):
         self.imgs = imgs
-        self.mean=[0,0,0]
-        if pretrained=='vggface':
+        if preprocess=='vggface':
             self.mean = [129.1862793, 104.76238251, 93.59396362]
-        if pretrained=='imagenet':
+        else:
             self.mean = [123.68, 116.779, 103.939]
         self.convlayers()
         self.dan_part()
-        self.output = tf.nn.sigmoid(self.reg_head)
+        self.output = tf.nn.sigmoid(self.reg_head, name="output")
         self.cost_reg = REG_PENALTY*tf.reduce_mean(tf.square(self.parameters[-2]))/2
         
 
@@ -241,7 +242,7 @@ class DAN:
             avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, shape/2]), 1)
             
             self.concat = tf.concat([maxpool5_flat, avgpool5_flat], 1)
-            self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b)
+            self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b, name="reg_val")
             self.parameters += [fc1w, fc1b]
 
 
@@ -263,6 +264,12 @@ class DAN:
             if layer_type=='conv' and name[0:2]!='fc':
                 kernel, bias = layer[0]['weights'][0][0]
                 sess.run(self.parameters[i].assign(kernel))
-                sess.run(self.parameters[i+1].assign(bias))
+                sess.run(self.parameters[i+1].assign(bias.reshape(bias.shape[0])))
                 print name, kernel.shape, bias.shape
                 i+=2
+
+    def load_trained_model(self, pickle_file, sess):
+        with open(pickle_file, 'rb') as pfile:
+            param=pickle.load(pfile)
+        for i in range(len(param)):
+            sess.run(self.parameters[i].assign(param[i]))

@@ -4,7 +4,13 @@ def printTime(remtime):
 	hrs = int(remtime)/3600
 	mins = int((remtime/60-hrs*60))
 	secs = int(remtime-mins*60-hrs*3600)
-	print(str(hrs)+"Hrs "+str(mins)+"Mins "+str(secs)+"Secs remaining..")
+	timedisp="Time remaining : "
+	if hrs>0:
+		timedisp+=str(hrs)+"Hrs "
+	if mins>0:
+		timedisp+=str(mins)+"Mins "
+	timedisp += str(secs)+"Secs"
+	print(timedisp)
 
 def dataBatch(data_path, BATCH_SIZE, N_EPOCHS=1):
 	reader = tf.TFRecordReader()
@@ -23,24 +29,3 @@ def dataBatch(data_path, BATCH_SIZE, N_EPOCHS=1):
 	images, labels = tf.train.shuffle_batch([image, label], batch_size=BATCH_SIZE, capacity=100, min_after_dequeue=BATCH_SIZE, allow_smaller_final_batch=True)
 	return images, labels
 
-
-
-# VID_BATCH = 100
-
-
-# df = pd.read_csv('small_train_sample.csv')
-# NUM_VID = len(df)
-# images=np.empty((NUM_VID*100, 224, 224, 3))
-# traits=np.zeros((NUM_VID*100, 5))
-
-# for i in range(NUM_VID):
-# 	filelist=glob.glob('ImageData/trainingData/'+(df['VideoName'].iloc[i]).split('.mp4')[0]+'/*.jpg')
-# 	print(str(i)+" "+ str(len(filelist))+" "+df['VideoName'].iloc[i])
-# 	images[i*100:(i+1)*100] = np.array([np.array(Image.open(fname).resize((224,224), Image.ANTIALIAS)) for fname in filelist])
-# 	traits[i*100:(i+1)*100]=np.array(df.drop(['VideoName'], 1, inplace=False).iloc[i])	
-
-
-# ind = [i for i in range(NUM_IMAGES)]
-
-# print(images.shape)
-# print(traits.shape)
