@@ -1,6 +1,6 @@
 # First-Impression
 
-This is the solution to the poblem "First Impressions" given in CVPR'17, ECCV '16 & ICPR '16 and this piece of code is the partial implementation of the paper [Deep Bimodal Regression for Apparent Personality Analysis](https://cs.nju.edu.cn/wujx/paper/eccvw16_APA.pdf) which is the winner of ECCV 2016
+This is the solution to the problem "First Impressions" given in CVPR'17, ECCV '16 & ICPR '16 and this piece of code is the partial implementation of the paper [Deep Bimodal Regression for Apparent Personality Analysis](https://cs.nju.edu.cn/wujx/paper/eccvw16_APA.pdf) which is the winner of ECCV 2016
 
 This problem is a challenge on “first impressions”, in which participants will develop solutions for recognizing personality traits of users in short video sequences. They have made available a large newly collected data set sponsored by Microsoft of at least 10,000 15-second videos collected from YouTube, annotated with personality traits by AMT workers. 
 
