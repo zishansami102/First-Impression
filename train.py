@@ -91,7 +91,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
-				print error, ": Error in reading this batch"
+				print (error, ": Error in reading this batch")
 				error+=1
 				if error>10:
 					break
@@ -110,12 +110,12 @@ with tf.Session(config=config) as sess:
 			if not i%20000:
 				with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
 					pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-				print str(param_num)+" weights Saved!!"
+				print (str(param_num)+" weights Saved!!")
 				param_num+=1
 
 		with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
 			pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-			print str(param_num)+" weights Saved!!"
+			print (str(param_num)+" weights Saved!!")
 			param_num+=1
 
 
@@ -128,7 +128,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				error+=1
 				if error>10:
 					break
@@ -147,7 +147,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([val_images, val_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				error+=1
 				if error>10:
 					break
