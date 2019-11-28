@@ -4,7 +4,7 @@ import pandas as pd
 import tensorflow as tf
 import sys
 import numpy as np
-import Image
+from PIL import Image 
 import cv2
 
 
@@ -47,7 +47,7 @@ writer = tf.python_io.TFRecordWriter(train_filename)
 for i in range(len(train_addrs)):
     # print how many images are saved every 1000 images
     if not i % 1000:
-        print 'Train data: {}/{}'.format(i, len(train_addrs))
+        print ('Train data: {}/{}'.format(i, len(train_addrs)))
         sys.stdout.flush()
     # Load the image
     img = load_image(train_addrs[i])
@@ -70,7 +70,7 @@ for i in range(len(train_addrs)):
 writer.close()
 sys.stdout.flush()
 
-print len(train_addrs), "training images saved.. "
+print (len(train_addrs), "training images saved.. ")
 
 
 df = pd.read_csv('validation_gt.csv')
@@ -93,7 +93,7 @@ writer = tf.python_io.TFRecordWriter(val_filename)
 for i in range(len(val_addrs)):
     # print how many images are saved every 1000 images
     if not i % 1000:
-        print 'Val data: {}/{}'.format(i, len(val_addrs))
+        print ('Val data: {}/{}'.format(i, len(val_addrs)))
         sys.stdout.flush()
     # Load the image
     img = load_image(val_addrs[i])
@@ -112,8 +112,8 @@ for i in range(len(val_addrs)):
 writer.close()
 sys.stdout.flush()
 
-print len(train_addrs), "training images saved.. "
-print len(val_addrs), "validation images saved.. "
+print (len(train_addrs), "training images saved.. ")
+print (len(val_addrs), "validation images saved.. ")
 
 
 # test_filename = 'val_full.tfrecords'  # address to save the TFRecords file
@@ -123,14 +123,14 @@ print len(val_addrs), "validation images saved.. "
 # for i in range(len(val_addrs)):
 #     # print how many images are saved every 1000 images
 #     if not i % 1000:
-#         print 'Val data: {}/{}'.format(i, len(val_addrs))
+#         print ('Val data: {}/{}'.format(i, len(val_addrs)))
 #         sys.stdout.flush()
 #     # Load the image
 #     img = load_image(val_addrs[i])
-#     # print img.shape
+#     # print (img.shape)
 #     label = val_labels[i].astype(np.float32)
-#     # print label.shape
-#     # print label
+#     # print (label.shape)
+#     # print (label)
 #     # Create a feature
 #     feature = {'val/label': _bytes_feature(tf.compat.as_bytes(label.tostring())),
 #                'val/image': _bytes_feature(tf.compat.as_bytes(img.tostring()))}
