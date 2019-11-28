@@ -77,7 +77,7 @@ with tf.Session(config=config) as sess:
 	validation_accuracy = []
 	epoch=0
 	stime = time.time()
-	print "Testing Started"
+	print ("Testing Started")
 	for pickle_file in file_list:
 		error=0
 		model.load_trained_model(pickle_file, sess)
@@ -90,7 +90,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				if error>=5:
 					break
 				error+=1
@@ -99,7 +99,7 @@ with tf.Session(config=config) as sess:
 			tr_mean_acc = np.mean(1-np.absolute(output-epoch_y))
 			tr_acc_list.append(tr_mean_acc)
 			if not i%20000:
-				print i, "images completed in training"
+				print (i, "images completed in training")
 
 		tr_mean_acc = np.mean(tr_acc_list)
 		training_accuracy.append(tr_mean_acc)
@@ -110,7 +110,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([val_images, val_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				if error>=5:
 					break
 				error+=1
@@ -119,7 +119,7 @@ with tf.Session(config=config) as sess:
 			val_mean_acc = np.mean(1-np.absolute(output-epoch_y))
 			val_acc_list.append(val_mean_acc)
 			if not i%20000:
-				print i, "images completed in validation"
+				print (i, "images completed in validation")
 		sess.run(tf.local_variables_initializer())
 
 		val_mean_acc = np.mean(val_acc_list)
@@ -136,7 +136,7 @@ with tf.Session(config=config) as sess:
 		if not epoch%(N_EPOCHS/2):
 			with open("acc_plot25.pkl", "wb") as nfile:
 				pickle.dump([training_accuracy, validation_accuracy], nfile)
-			print "Hafl testing saved"
+			print ("Half testing saved")
 
 	
 
@@ -144,5 +144,5 @@ with tf.Session(config=config) as sess:
 	# Wait for threads to stop
 	coord.join(threads)
 
-	print "Testing done... Values saved successfully"
+	print ("Testing done... Values saved successfully")
 
