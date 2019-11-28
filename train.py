@@ -169,7 +169,7 @@ with tf.Session(config=config) as sess:
 
 	saver = tf.train.Saver()
 	saver.save(sess, 'model_full')
-	print "Session Saved!!"
+	print ("Session Saved!!")
 	with open('loss_full.pkl', 'wb') as pfile:
 		pickle.dump(loss_list, pfile, pickle.HIGHEST_PROTOCOL)
-	print "Loss List Saved!!"
+	print ("Loss List Saved!!")
