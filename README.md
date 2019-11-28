@@ -48,10 +48,10 @@ Downlad the training dataset and extract it into a new /data directory with all 
 [Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
 
 
-Run the vidToimg.py file to scrape the images from the videos and save it to a new ImageData directory
+Run the Video_to_Image.py file to scrape the images from the videos and save it to a new ImageData directory
 
 ```
-python VidToimg.py
+python Video_to_Image.py
 ```
 
 
