@@ -27,9 +27,9 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-* [Python2](https://www.python.org/download/releases/2.7.2/) - Python version 2.7.2
+* [Python3](https://www.python.org/downloads/release/python-373/) - Python version 3.7.3
 * [Numpy](http://www.numpy.org/) - Multidimensioanl Mathematical Computing
-* [Tensorflow](https://www.tensorflow.org/) - Deep Learning python module
+* [Tensorflow 1.x](https://www.tensorflow.org/) - Deep Learning python module
 * [Pandas](https://pandas.pydata.org/) - Loading csv files
 * [Cha-Learn Dataset](http://chalearnlap.cvc.uab.es/dataset/24/description/) - Dataset for this problem
 * [Pretrained VGG-Face Model](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model
