@@ -33,13 +33,14 @@ These instructions will get you a copy of the project up and running on your loc
 * [Pandas](https://pandas.pydata.org/) - Loading csv files
 * [Cha-Learn Dataset](http://chalearnlap.cvc.uab.es/dataset/24/description/) - Dataset for this problem
 * [Pretrained VGG-Face Model](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model
+* [Pilow](https://pypi.org/project/Pillow/2.2.2/) Python Imaging Library
 
 ### Installing
 
 Clone the repository
 
 ```
-git clone https://github.com/zishansami102/First-Impression
+git clone https://github.com/THEFASHIONGEEK/First-Impression.git
 ```
 
 Downlad the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
