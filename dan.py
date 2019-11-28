@@ -265,7 +265,7 @@ class DAN:
                 kernel, bias = layer[0]['weights'][0][0]
                 sess.run(self.parameters[i].assign(kernel))
                 sess.run(self.parameters[i+1].assign(bias.reshape(bias.shape[0])))
-                print name, kernel.shape, bias.shape
+                print (name, kernel.shape, bias.shape)
                 i+=2
 
     def load_trained_model(self, pickle_file, sess):
