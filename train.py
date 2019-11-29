@@ -23,9 +23,9 @@ NUM_TEST_IMAGES = 199900
 imgs = tf.placeholder('float', [None, 224, 224, 3], name="image_placeholder")
 values = tf.placeholder('float', [None, 5], name="value_placeholder")
 
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-config.gpu_options.per_process_gpu_memory_fraction = 0.8
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8,allow_growth=True)
+config = tf.ConfigProto(allow_soft_placement=True,gpu_options=gpu_options)
+
 with tf.Session(config=config) as sess:
 	
 	model = DAN(imgs, REG_PENALTY=REG_PENALTY, preprocess='vggface')
