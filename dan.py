@@ -238,8 +238,8 @@ class DAN:
             fc1b = tf.Variable(tf.constant(1.0, shape=[5], dtype=tf.float32),
                                  trainable=True, name='biases')
             
-            maxpool5_flat = tf.nn.l2_normalize(tf.reshape(self.maxpool5, [-1, shape/2]), 1)
-            avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, shape/2]), 1)
+            maxpool5_flat = tf.nn.l2_normalize(tf.reshape(self.maxpool5, [-1, int(shape/2)]), 1)
+            avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, int(shape/2)]), 1)
             
             self.concat = tf.concat([maxpool5_flat, avgpool5_flat], 1)
             self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b, name="reg_val")
