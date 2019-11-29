@@ -34,6 +34,7 @@ These instructions will get you a copy of the project up and running on your loc
 * [Cha-Learn Dataset](http://chalearnlap.cvc.uab.es/dataset/24/description/) - Dataset for this problem
 * [Pretrained VGG-Face Model](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model
 * [Pillow 6.1.0](https://pypi.org/project/Pillow/) Python Imaging Library
+* [OpenCV 3.4.1](https://breakthrough.github.io/Installing-OpenCV/)  library used for Image Processing
 
 ### Installing
 
