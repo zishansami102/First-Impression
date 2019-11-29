@@ -55,10 +55,10 @@ python Video_to_Image.py
 ```
 
 
-If succesfully completed then run the savetfreco.py file to form a data pipeline by saving the all the train images into train_full.tfrecords file , all the validation images into val_full.tfrecords to load it later during training
+If succesfully completed then run the Write_Into_TFRecords.py file to form a data pipeline by saving the all the train images into train_full.tfrecords file , all the validation images into val_full.tfrecords to load it later during training
 
 ```
-python savetfreco.py
+python Write_Into_TFRecords.py
 ```
 
 Start the training by running the following command
