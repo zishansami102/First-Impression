@@ -48,14 +48,17 @@ Downlad the training dataset and extract it into a new /data directory with all 
 
 [Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
 
-
 Run the Video_to_Image.py file to scrape the images from the videos and save it to a new ImageData directory
 
 ```
 python Video_to_Image.py
 ```
 
+Run the vid_to_wav.py file to extract audio(.wav) files from the videos and save it to a new VoiceData directory
 
+```
+python vid_to_wav.py
+```
 If succesfully completed then run the Write_Into_TFRecords.py file to form a data pipeline by saving the all the train images into train_full.tfrecords file , all the validation images into val_full.tfrecords to load it later during training
 
 ```
