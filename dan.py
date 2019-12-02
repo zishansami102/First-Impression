@@ -238,8 +238,8 @@ class DAN:
             fc1b = tf.Variable(tf.constant(1.0, shape=[5], dtype=tf.float32),
                                  trainable=True, name='biases')
             
-            maxpool5_flat = tf.nn.l2_normalize(tf.reshape(self.maxpool5, [-1, shape/2]), 1)
-            avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, shape/2]), 1)
+            maxpool5_flat = tf.nn.l2_normalize(tf.reshape(self.maxpool5, [-1, int(shape/2)]), 1)
+            avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, int(shape/2)]), 1)
             
             self.concat = tf.concat([maxpool5_flat, avgpool5_flat], 1)
             self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b, name="reg_val")
@@ -265,7 +265,7 @@ class DAN:
                 kernel, bias = layer[0]['weights'][0][0]
                 sess.run(self.parameters[i].assign(kernel))
                 sess.run(self.parameters[i+1].assign(bias.reshape(bias.shape[0])))
-                print name, kernel.shape, bias.shape
+                print (name, kernel.shape, bias.shape)
                 i+=2
 
     def load_trained_model(self, pickle_file, sess):

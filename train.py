@@ -14,20 +14,18 @@ BATCH_SIZE = 25
 N_EPOCHS = 2
 REG_PENALTY = 0
 PER=0.2
-# NUM_VID = 500
 NUM_IMAGES = 599900	
 NUM_TEST_IMAGES = 199900
-# NUM_IMAGES = 10000	
-# NUM_TEST_IMAGES = 4000
+
 
 
 
 imgs = tf.placeholder('float', [None, 224, 224, 3], name="image_placeholder")
 values = tf.placeholder('float', [None, 5], name="value_placeholder")
 
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
-config.gpu_options.per_process_gpu_memory_fraction = 0.8
+gpu_options = tf.GPUOptions(per_process_gpu_memory_fraction=0.8,allow_growth=True)
+config = tf.ConfigProto(allow_soft_placement=True,gpu_options=gpu_options)
+
 with tf.Session(config=config) as sess:
 	
 	model = DAN(imgs, REG_PENALTY=REG_PENALTY, preprocess='vggface')
@@ -91,7 +89,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
-				print error, ": Error in reading this batch"
+				print (error, ": Error in reading this batch")
 				error+=1
 				if error>10:
 					break
@@ -110,12 +108,12 @@ with tf.Session(config=config) as sess:
 			if not i%20000:
 				with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
 					pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-				print str(param_num)+" weights Saved!!"
+				print (str(param_num)+" weights Saved!!")
 				param_num+=1
 
 		with open('param'+str(param_num)+'.pkl', 'wb') as pfile:
 			pickle.dump(sess.run(model.parameters), pfile, pickle.HIGHEST_PROTOCOL)
-			print str(param_num)+" weights Saved!!"
+			print (str(param_num)+" weights Saved!!")
 			param_num+=1
 
 
@@ -128,7 +126,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([tr_images, tr_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				error+=1
 				if error>10:
 					break
@@ -147,7 +145,7 @@ with tf.Session(config=config) as sess:
 			try:
 				epoch_x, epoch_y = sess.run([val_images, val_labels])
 			except:
-				print "Error in reading this batch"
+				print ("Error in reading this batch")
 				error+=1
 				if error>10:
 					break
@@ -169,7 +167,7 @@ with tf.Session(config=config) as sess:
 
 	saver = tf.train.Saver()
 	saver.save(sess, 'model_full')
-	print "Session Saved!!"
+	print ("Session Saved!!")
 	with open('loss_full.pkl', 'wb') as pfile:
 		pickle.dump(loss_list, pfile, pickle.HIGHEST_PROTOCOL)
-	print "Loss List Saved!!"
+	print ("Loss List Saved!!")
