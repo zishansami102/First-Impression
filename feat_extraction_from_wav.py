@@ -29,7 +29,7 @@ def _float_feature(value):
 def _bytes_feature(value):
 	return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-df = load_pickle('annotation_training.pkl')
+df = load_pickle('Annotations/annotation_training.pkl')
 NUM_VID = len(df)
 addrs = []
 labels = []
@@ -70,7 +70,7 @@ print (len(train_addrs), "training audio files saved.. ")
 
 
 
-df = load_pickle('annotation_validation.pkl')
+df = load_pickle('Annotations/annotation_validation.pkl')
 NUM_VID = len(df)
 addrs = []
 labels = []
