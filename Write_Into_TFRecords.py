@@ -28,6 +28,7 @@ def load_pickle(pickle_file):
         df.columns = ["VideoName","ValueExtraversion","ValueNeuroticism","ValueAgreeableness","ValueConscientiousness","ValueOpenness"]
     return df
 
+##### TRAINING DATA ####
 df = load_pickle('annotation_training.pkl')
 NUM_VID = len(df)
 addrs = []
@@ -64,10 +65,12 @@ for i in range(len(train_addrs)):
 
 writer.close()
 sys.stdout.flush()
+##### TRAINING DATA ####
 
 print (len(train_addrs), "training images saved.. ")
 
 
+##### VALIDATION DATA ####
 df = load_pickle('annotation_validation.pkl')
 NUM_VID = len(df)
 addrs = []
@@ -104,6 +107,7 @@ for i in range(len(val_addrs)):
 
 writer.close()
 sys.stdout.flush()
+##### VALIDATION DATA ####
 
 print (len(train_addrs), "training images saved.. ")
 print (len(val_addrs), "validation images saved.. ")
