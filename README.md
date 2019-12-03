@@ -66,6 +66,11 @@ If succesfully completed then run the Write_Into_TFRecords.py file to form a dat
 ```
 python Write_Into_TFRecords.py
 ```
+Run the feat_extraction_from_wav.py file to form a data pipeline by saving the all the train audio into train_audio_full.tfrecords file , all the validation images into val_audio_full.tfrecords to load it later during training
+
+```
+python feat_extraction_from_wav.py
+```
 
 Start the training by running the following command
 
