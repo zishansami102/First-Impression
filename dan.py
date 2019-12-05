@@ -33,6 +33,7 @@ class DAN:
 
         # zero-mean input
         with tf.name_scope('preprocess') as scope:
+            
             mean = tf.constant(self.mean, dtype=tf.float32, shape=[1, 1, 1, 3], name='img_mean')
             images = self.imgs-mean
 
@@ -237,7 +238,7 @@ class DAN:
             avgpool5_flat = tf.nn.l2_normalize(tf.reshape(self.avgpool5, [-1, int(shape/2)]), 1)
             
             self.concat = tf.concat([maxpool5_flat, avgpool5_flat], 1)
-            self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b, name="reg_val")
+            self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b , name = scope)
             self.parameters += [fc1w, fc1b]
 
 
