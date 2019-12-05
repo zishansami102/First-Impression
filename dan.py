@@ -13,12 +13,7 @@ import numpy as np
 import warnings
 from scipy.io import loadmat
 import pickle
-
-
 warnings.filterwarnings("ignore")
-
-
-
 
 class DAN:
     def __init__(self, imgs, REG_PENALTY=0, preprocess=None):
@@ -26,7 +21,7 @@ class DAN:
         if preprocess=='vggface':
             self.mean = [129.1862793, 104.76238251, 93.59396362]
         else:
-            self.mean = [123.68, 116.779, 103.939]
+            self.mean = [0,0,0]
         self.convlayers()
         self.dan_part()
         self.output = tf.nn.sigmoid(self.reg_head, name="output")
@@ -245,14 +240,6 @@ class DAN:
             self.reg_head = tf.nn.bias_add(tf.matmul(self.concat, fc1w), fc1b, name="reg_val")
             self.parameters += [fc1w, fc1b]
 
-
-    def initialize_with_imagenet(self, weight_file, sess):
-        weights = np.load(weight_file)
-        keys = sorted(weights.keys())
-        for i, k in enumerate(keys):
-            if i==len(self.parameters)-2:
-                break
-            sess.run(self.parameters[i].assign(weights[k]))
 
     def initialize_with_vggface(self, weight_file, sess):
         data = loadmat(weight_file)
