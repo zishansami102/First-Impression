@@ -46,7 +46,7 @@ Clone the repository
 git clone https://github.com/THEFASHIONGEEK/First-Impression.git
 ```
 
-Downlad the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
+Download the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
 
 [Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
 
