@@ -83,3 +83,4 @@ python train.py
 
 * [paper](https://cs.nju.edu.cn/wujx/paper/eccvw16_APA.pdf) - Implemented paper
 * [TfRecord Data Pipeline](http://machinelearninguru.com/deep_learning/data_preparation/tfrecord/tfrecord.html#read) - Used to make data pipeline
+* [VGG16 in TensorFlow](https://www.cs.toronto.edu/~frossard/post/vgg16/) - Used in DAN 
