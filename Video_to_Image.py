@@ -6,7 +6,9 @@ import numpy as np
 import os
 import zipfile
 
-## Runnin a loop throught all the zipped training file to extract all video and then extract 100 frames from each.
+# Runnin a loop throught all the zipped training file to extract all video and then extract 100 frames from each.
+
+### Training data ###
 for i in range(1,76):
     if i<10:
         zipfilename = 'training80_0'+str(i)+'.zip'
@@ -55,7 +57,9 @@ for i in range(1,76):
 
         ## Print the file which is done
         print (zipfilename, ':', file_name)
-#
+### Training data ###
+
+### Validation data ###
 for i in range(1,26):
     if i<10:
         zipfilename = 'validation80_0'+str(i)+'.zip'
@@ -104,4 +108,5 @@ for i in range(1,26):
 
         ## Print the file which is done
         print (zipfilename, ':', file_name) 
-                
+
+ ### Validation data ###                
