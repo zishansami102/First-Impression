@@ -28,7 +28,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 * [Python3](https://www.python.org/downloads/release/python-373/) - Python version 3.7.3
-* [Numpy](http://www.numpy.org/) - Multidimensioanl Mathematical Computing
+* [Numpy](http://www.numpy.org/) - Multidimensional Mathematical Computing
 * [Tensorflow 1.14.0](https://www.tensorflow.org/) - Deep Learning python module
 * [Pandas](https://pandas.pydata.org/) - Loading csv files
 * [Cha-Learn Dataset](http://chalearnlap.cvc.uab.es/dataset/24/description/) - Dataset for this problem
@@ -50,6 +50,7 @@ git clone https://github.com/THEFASHIONGEEK/First-Impression.git
 Download the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
 
 [Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
+
 Run the requirements.txt 
 
 ```
