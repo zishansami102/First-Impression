@@ -37,6 +37,7 @@ These instructions will get you a copy of the project up and running on your loc
 * [OpenCV 3.4.1](https://breakthrough.github.io/Installing-OpenCV/)  library used for Image Processing
 * [ffmpeg](https://ffmpeg.zeranoe.com/builds/ ) software suite of libraries and programs for handling video, audio, and other multimedia 
 files and streams
+* [python_speech_features](https://pypi.org/project/python_speech_features/) This library provides common speech features for ASR including MFCCs and filterbank energies
 
 ### Installing
 
@@ -49,7 +50,11 @@ git clone https://github.com/THEFASHIONGEEK/First-Impression.git
 Download the training dataset and extract it into a new /data directory with all 75 training zip files and 25 validation zip files as it is, we will extract them through the script.
 
 [Download](http://www.vlfeat.org/matconvnet/models/vgg-face.mat) Pretrained Vgg-face model and move it to the root directory
+Run the requirements.txt 
 
+```
+pip install -r requirements.txt
+```
 Run the Video_to_Image.py file to scrape the images from the videos and save it to a new ImageData directory
 
 ```
