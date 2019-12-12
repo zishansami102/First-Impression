@@ -23,8 +23,6 @@ class DAN:
         self.imgs = imgs
         if preprocess == "vggface":
             self.mean = [129.1862793, 104.76238251, 93.59396362]
-        else:
-            self.mean = [0, 0, 0]
         self.convlayers()
         self.dan_part()
         self.output = tf.nn.sigmoid(self.reg_head, name="output")
@@ -35,7 +33,6 @@ class DAN:
 
         # zero-mean input
         with tf.name_scope("preprocess") as scope:
-
             mean = tf.constant(
                 self.mean, dtype=tf.float32, shape=[1, 1, 1, 3], name="img_mean"
             )
@@ -285,20 +282,28 @@ class DAN:
             self.conv5_3 = tf.nn.relu(out, name=scope)
             self.parameters += [kernel, biases]
 
-        # MaxPool5
-        self.maxpool5 = tf.nn.max_pool(
+        # pool5
+        self.pool5 = tf.nn.max_pool(
             self.conv5_3,
             ksize=[1, 2, 2, 1],
             strides=[1, 2, 2, 1],
             padding="SAME",
+            name="pool5",
+        )
+        # MaxPool6
+        self.maxpool5 = tf.nn.max_pool(
+            self.pool5,
+            ksize=[1, 7, 7, 1],
+            strides=[1, 1, 1, 1],
+            padding="SAME",
             name="maxpool5",
         )
 
-        # AvgPool5
+        # AvgPool6
         self.avgpool5 = tf.nn.avg_pool(
-            self.conv5_3,
-            ksize=[1, 2, 2, 1],
-            strides=[1, 2, 2, 1],
+            self.pool5,
+            ksize=[1, 7, 7, 1],
+            strides=[1, 1, 1, 1],
             padding="SAME",
             name="avgpool5",
         )
@@ -308,7 +313,6 @@ class DAN:
         # fc1
         with tf.name_scope("reg_head") as scope:
             shape = 2 * int(np.prod(self.maxpool5.get_shape()[1:]))
-            # shape = int(np.prod(self.pool5.get_shape()[1:]))
             fc1w = tf.Variable(
                 tf.truncated_normal([shape, 5], dtype=tf.float32, stddev=1e-1),
                 name="weights",
@@ -343,7 +347,6 @@ class DAN:
                 kernel, bias = layer[0]["weights"][0][0]
                 sess.run(self.parameters[i].assign(kernel))
                 sess.run(self.parameters[i + 1].assign(bias.reshape(bias.shape[0])))
-                print(name, kernel.shape, bias.shape)
                 i += 2
 
     def load_trained_model(self, pickle_file, sess):
