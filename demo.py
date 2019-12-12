@@ -16,7 +16,7 @@ from dan import DAN
 warnings.filterwarnings("ignore")
 
 
-def big5(file_name):
+def predict(file_name):
 
     num = []
 
@@ -71,15 +71,13 @@ def big5(file_name):
     filelist = glob.glob("ImageData/testingData/" + str(file_name) + "/*.jpg")
     addrs += filelist
 
-    train_addrs= addrs
+    train_addrs = addrs
     train_filename = "test.tfrecords"  # address to save the TFRecords file
     writer = tf.python_io.TFRecordWriter(train_filename)
-    for i in range(len(train_addrs)):  
+    for i in range(len(train_addrs)):
         # Load the image
         img = load_image(train_addrs[i])
-        feature = {
-            "test/image": _bytes_feature(tf.compat.as_bytes(img.tostring()))
-        }
+        feature = {"test/image": _bytes_feature(tf.compat.as_bytes(img.tostring()))}
         # Create an example protocol buffer
         example = tf.train.Example(features=tf.train.Features(feature=feature))
 
@@ -106,16 +104,14 @@ def big5(file_name):
             ["test.tfrecords"], num_epochs=N_EPOCHS
         )
         _, tr_serialized_example = tr_reader.read(tr_filename_queue)
-        tr_feature = {
-            "test/image": tf.FixedLenFeature([], tf.string)
-        }
+        tr_feature = {"test/image": tf.FixedLenFeature([], tf.string)}
         tr_features = tf.parse_single_example(
             tr_serialized_example, features=tr_feature
         )
 
         tr_image = tf.decode_raw(tr_features["test/image"], tf.uint8)
         tr_image = tf.reshape(tr_image, [224, 224, 3])
-        tr_images= tf.train.shuffle_batch(
+        tr_images = tf.train.shuffle_batch(
             [tr_image],
             batch_size=BATCH_SIZE,
             capacity=100,
@@ -140,7 +136,6 @@ def big5(file_name):
                 try:
                     epoch_x = sess.run(tr_images)
                 except:
-                    # print("Error in reading this batch")
                     if error >= 5:
                         break
                     error += 1
@@ -154,9 +149,15 @@ def big5(file_name):
         # Wait for threads to stop
         coord.join(threads)
     a = np.round(np.mean(np.concatenate(num), axis=0), 3)
-    a_json = {"Extraversion":a[0],"Neuroticism":a[1],"Agreeableness":a[2],"Conscientiousness":a[3],"Openness":a[4]}
+    a_json = {
+        "Extraversion": a[0],
+        "Neuroticism": a[1],
+        "Agreeableness": a[2],
+        "Conscientiousness": a[3],
+        "Openness": a[4],
+    }
     return a_json
 
 
-output = big5("_uNup91ZYw0.002.mp4")
+output = predict("_uNup91ZYw0.002.mp4")
 print(output)
