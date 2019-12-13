@@ -15,7 +15,7 @@ As is known, the first impression made is highly important in many contexts, suc
 
 The model used is called `Descriptor Aggregation Network` called DAN in short.
 
-![Model Archi](modelImg.png)
+![Model Archi](Images/Dan_model.PNG)
 
 What distinguishes DAN from the traditional CNN is: the fully connected layers are discarded, and replaced by both average- and max-pooling following the last convolutional layers (Pool5). Meanwhile, each pooling operation is followed by the standard L2-normalization. After that, the obtained two 512-d feature vectors are concatenated as the final image representation. Thus, in DAN, the deep descriptors of the last convolutional layers are aggregated as a single visual feature. Finally, a regression (fc+sigmoid) layer is added for end-to-end training.
 
