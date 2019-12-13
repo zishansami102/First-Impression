@@ -256,7 +256,7 @@ class DAN_PLUS:
             self.conv5_2 = tf.nn.relu(out, name=scope)
             self.parameters += [kernel, biases]
 
-        # MaxPool5
+        # MaxPool5_2
         self.maxpool5_2 = tf.nn.max_pool(
             self.conv5_2,
             ksize=[1, 14, 14, 1],
@@ -265,7 +265,7 @@ class DAN_PLUS:
             name="maxpool5_2",
         )
 
-        # AvgPool6
+        # AvgPool5_2
         self.avgpool5_2 = tf.nn.avg_pool(
             self.conv5_2,
             ksize=[1, 14, 14, 1],
@@ -297,22 +297,22 @@ class DAN_PLUS:
             padding="SAME",
             name="pool5",
         )
-        # MaxPool6
-        self.maxpool5 = tf.nn.max_pool(
+        # MaxPool5_3
+        self.maxpool5_3 = tf.nn.max_pool(
             self.pool5,
             ksize=[1, 7, 7, 1],
             strides=[1, 1, 1, 1],
             padding="SAME",
-            name="maxpool5",
+            name="maxpool5_3",
         )
 
-        # AvgPool6
-        self.avgpool5 = tf.nn.avg_pool(
+        # AvgPool5_3
+        self.avgpool5_3 = tf.nn.avg_pool(
             self.pool5,
             ksize=[1, 7, 7, 1],
             strides=[1, 1, 1, 1],
             padding="SAME",
-            name="avgpool5",
+            name="avgpool5_3",
         )
 
 
@@ -321,7 +321,7 @@ class DAN_PLUS:
 
         # fc1
         with tf.name_scope("reg_head") as scope:
-            shape = 2 * int(np.prod(self.maxpool5.get_shape()[1:]))
+            shape = 2 * int(np.prod(self.maxpool5_3.get_shape()[1:]))
             
             fc1w = tf.Variable(
                 tf.truncated_normal([shape, 5], dtype=tf.float32, stddev=1e-1),
@@ -339,14 +339,14 @@ class DAN_PLUS:
                 tf.reshape(self.avgpool5_2, [-1, int(shape / 2)]), 1
             )
 
-            maxpool5_flat = tf.nn.l2_normalize(
-                tf.reshape(self.maxpool5, [-1, int(shape / 2)]), 1
+            maxpool5_3_flat = tf.nn.l2_normalize(
+                tf.reshape(self.maxpool5_3, [-1, int(shape / 2)]), 1
             )
-            avgpool5_flat = tf.nn.l2_normalize(
-                tf.reshape(self.avgpool5, [-1, int(shape / 2)]), 1
+            avgpool5_3_flat = tf.nn.l2_normalize(
+                tf.reshape(self.avgpool5_3, [-1, int(shape / 2)]), 1
             )
 
-            self.concat = tf.concat([maxpool5_flat, avgpool5_flat,maxpool5_2_flat,avgpool5_2_flat], 1)
+            self.concat = tf.concat([maxpool5_3_flat, avgpool5_3_flat,maxpool5_2_flat,avgpool5_2_flat], 1)
             self.reg_head = tf.nn.bias_add(
                 tf.matmul(self.concat, fc1w), fc1b, name=scope
             )
