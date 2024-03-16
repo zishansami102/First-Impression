@@ -73,6 +73,9 @@ Start the training by running the following command
 python train.py
 ```
 
+## Other Proud Works: An AI Powered Website Builder
+Build websites with AI, publish in seconds  - [Makeweb.ai](https://makeweb.ai)
+
 
 ## Acknowledgments
 
